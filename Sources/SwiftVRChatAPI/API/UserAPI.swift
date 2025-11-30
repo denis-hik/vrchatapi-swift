@@ -56,7 +56,7 @@ let userUrl = "\(baseUrl)/users"
 // MARK: User API
 //
 
-@available(iOS 15.0, *)
+@available(iOS 15.0, macOS 12.0, *)
 public struct UserAPIAsync {
     
     public static func updateUser(client: APIClientAsync, userID: String,
