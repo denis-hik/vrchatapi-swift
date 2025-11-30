@@ -48,7 +48,7 @@ public struct World: Codable {
 
 let worldUrl = "\(baseUrl)/worlds"
 
-@available(iOS 15.0, *)
+@available(iOS 15.0, macOS 12.0, *)
 public struct WorldAPIAsync {
 
     public static func getWorld(client: APIClientAsync, worldID: String) async -> World? {

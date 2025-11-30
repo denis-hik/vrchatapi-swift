@@ -30,7 +30,7 @@ public struct Favorite: Codable {
 
 let favoriteUrl = "\(baseUrl)/favorites"
 
-@available(iOS 15.0, *)
+@available(iOS 15.0, macOS 12.0, *)
 public struct FavoriteAPIAsync {
 
     public static func getFavorites(client: APIClientAsync, n: Int = 60) async -> [Favorite]? {
