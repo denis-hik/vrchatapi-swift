@@ -158,4 +158,28 @@ public struct AuthenticationAPI {
             completionHandler(verifyResponse?.verified)
         }
     }
+    public static func verify2FAAuthy(client: APIClient, emailOTP: String, completionHandler: @escaping @Sendable (Bool?) -> Void) {
+        let url = URL(string: "\(auth2FAUrl)/totp/verify")!
+        
+        let httpBody: Data?
+        do {
+            httpBody = try JSONSerialization.data(withJSONObject: ["code" : emailOTP], options: .prettyPrinted)
+        } catch let error {
+            print(error.localizedDescription)
+            return
+        }
+        
+        client.VRChatRequest(url: url,
+                             httpMethod: "POST",
+                             auth: true,
+                             contentType: "application/json",
+                             httpBody: httpBody) { data, response, error in
+            guard let data = data, error == nil else { return }
+
+            let verifyResponse:VerifyResponse? = decode(data: data)
+            
+            client.updateCookies()
+            completionHandler(verifyResponse?.verified)
+        }
+    }
 }
