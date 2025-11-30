@@ -39,6 +39,33 @@ public struct AuthenticationAPIAsync {
         return user
     }
     
+    public static func verify2FAAthy(client: APIClientAsync, emailOTP: String) async -> Bool? {
+            let url = URL(string: "\(auth2FAUrl)/totp/verify")!
+            
+            let httpBody: Data?
+            do {
+                httpBody = try JSONSerialization.data(withJSONObject: ["code" : emailOTP], options: .prettyPrinted)
+            } catch let error {
+                print(error.localizedDescription)
+                return nil
+            }
+            
+            let (data, _) = await client.VRChatRequest(url: url,
+                                 httpMethod: "POST",
+                                 auth: true,
+                                 contentType: "application/json",
+                                 httpBody: httpBody)
+            
+            guard let data = data else { return nil }
+
+            let verifyResponse:VerifyResponse? = decode(data: data)
+            
+            client.updateCookies()
+            
+            return verifyResponse?.verified
+            
+        }
+    
     public static func verify2FAEmail(client: APIClientAsync, emailOTP: String) async -> Bool? {
         let url = URL(string: "\(auth2FAUrl)/emailotp/verify")!
         
